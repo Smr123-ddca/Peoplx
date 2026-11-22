@@ -57,6 +57,8 @@ output/low_density/*
 output/medium_density/*
 output/high_density/*
 output/*.csv
+output/*.txt
+output/*.json
 !output/**/.gitkeep
 
 # Operating System & Editor Files

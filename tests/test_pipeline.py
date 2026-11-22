@@ -88,3 +88,48 @@ class TestPipelineIntegration:
         assert len(df) == 2
         assert df.iloc[0]["Detected Person Count"] == 3
         assert df.iloc[1]["Dataset Category"] == "medium_density"
+
+    def test_save_results_to_csv_prompt3_format(self, tmp_path):
+        """Verify CSV export contains the Prompt 3 7-column schema."""
+        csv_path = tmp_path / "output" / "crowd_estimation_results.csv"
+
+        records = [
+            {
+                "image_filename": "screen1.png",
+                "dataset_category": "low_density",
+                "detected_person_count": 2,
+                "inference_time_seconds": 0.0521,
+                "image_width": 1080,
+                "image_height": 620,
+                "processing_status": "SUCCESS",
+            },
+            {
+                "image_filename": "screen2.png",
+                "dataset_category": "high_density",
+                "detected_person_count": 28,
+                "inference_time_seconds": 0.0784,
+                "image_width": 1200,
+                "image_height": 750,
+                "processing_status": "SUCCESS",
+            },
+        ]
+
+        save_results_to_csv(records, csv_path)
+
+        assert csv_path.is_file()
+        df = pd.read_csv(csv_path)
+
+        expected_columns = [
+            "image_filename",
+            "dataset_category",
+            "detected_person_count",
+            "inference_time_seconds",
+            "image_width",
+            "image_height",
+            "processing_status",
+        ]
+        assert list(df.columns) == expected_columns
+        assert len(df) == 2
+        assert df.iloc[0]["detected_person_count"] == 2
+        assert df.iloc[1]["image_width"] == 1200
+        assert df.iloc[1]["processing_status"] == "SUCCESS"

@@ -68,16 +68,31 @@ def collect_dataset_images(dataset_dir: Path) -> List[Tuple[Path, str]]:
     return collected
 
 
+# Standard CSV columns
+PROMPT3_COLUMNS = [
+    "image_filename",
+    "dataset_category",
+    "detected_person_count",
+    "inference_time_seconds",
+    "image_width",
+    "image_height",
+    "processing_status",
+]
+
+LEGACY_COLUMNS = [
+    "Image Filename",
+    "Dataset Category",
+    "Detected Person Count",
+    "Processing Time (s)",
+]
+
+
 def save_results_to_csv(records: List[Dict], output_file: Path) -> None:
     """
     Export numerical detection results to a CSV file.
 
     Args:
-        records: List of result dictionaries containing:
-                 - Image filename
-                 - Dataset category
-                 - Detected person count
-                 - Processing time (seconds)
+        records: List of result dictionaries containing image metrics and counts.
         output_file: Destination Path for the CSV file.
     """
     # Ensure parent output directory exists
@@ -85,19 +100,16 @@ def save_results_to_csv(records: List[Dict], output_file: Path) -> None:
 
     df = pd.DataFrame(records)
 
-    # Reorder columns explicitly to match required functional specifications
-    expected_columns = [
-        "Image Filename",
-        "Dataset Category",
-        "Detected Person Count",
-        "Processing Time (s)",
-    ]
-
-    # If df is empty, create an empty dataframe with correct headers
     if df.empty:
-        df = pd.DataFrame(columns=expected_columns)
+        df = pd.DataFrame(columns=PROMPT3_COLUMNS)
     else:
-        # Align with expected column names if present
-        df = df[[col for col in expected_columns if col in df.columns]]
+        # Determine column order based on present fields
+        if "image_filename" in df.columns:
+            ordered = [col for col in PROMPT3_COLUMNS if col in df.columns]
+        elif "Image Filename" in df.columns:
+            ordered = [col for col in LEGACY_COLUMNS if col in df.columns]
+        else:
+            ordered = list(df.columns)
+        df = df[ordered]
 
     df.to_csv(output_file, index=False)
