@@ -1,0 +1,7 @@
+# Crowd Estimation Project - Dependencies
+# Supported on CPU (Standard PC & Raspberry Pi 4 compatible)
+
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+numpy>=1.23.0
+pandas>=1.5.0
