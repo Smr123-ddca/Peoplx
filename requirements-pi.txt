@@ -1,0 +1,7 @@
+# Crowd Estimation Project - Raspberry Pi 4 Dependencies
+# Tailored for Debian-based Raspberry Pi OS (headless / minimal memory)
+
+ultralytics>=8.0.0
+opencv-python-headless>=4.8.0
+numpy>=1.23.0
+pandas>=1.5.0

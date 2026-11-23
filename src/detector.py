@@ -44,6 +44,7 @@ class PersonDetector:
         model_name_or_path: Union[str, Path] = "yolov8n.pt",
         conf_threshold: float = 0.25,
         device: str = "cpu",
+        imgsz: int = 640,
     ) -> None:
         """
         Initialize the YOLO model for person detection on CPU.
@@ -52,9 +53,11 @@ class PersonDetector:
             model_name_or_path: Path to weights or model name (e.g. 'yolov8n.pt' or 'models/yolov8n.pt').
             conf_threshold: Minimum confidence score to accept a detection (default: 0.25).
             device: Inference device ('cpu' by default, suitable for standard PCs and Raspberry Pi).
+            imgsz: Default inference resolution / image size (default: 640).
         """
         self.conf_threshold = float(conf_threshold)
         self.device = str(device).lower().strip()
+        self.imgsz = int(imgsz)
         self.model_path = Path(model_name_or_path)
 
         # Validate that custom weight files exist before initializing
@@ -94,12 +97,19 @@ class PersonDetector:
                 pass
         return self.device == "cpu"
 
-    def detect(self, image: np.ndarray) -> DetectionResult:
+    def detect(
+        self,
+        image: np.ndarray,
+        conf_threshold: Optional[float] = None,
+        imgsz: Optional[int] = None,
+    ) -> DetectionResult:
         """
         Detect people in a single image.
 
         Args:
             image: Image array in BGR format (as loaded by OpenCV).
+            conf_threshold: Optional confidence threshold overriding default.
+            imgsz: Optional image size overriding default (e.g. 320, 416, 640).
 
         Returns:
             DetectionResult tuple with:
@@ -123,6 +133,9 @@ class PersonDetector:
         if image.size == 0 or len(image.shape) < 2:
             return DetectionResult(detections=[], count=0, inference_time=0.0)
 
+        conf = float(conf_threshold) if conf_threshold is not None else self.conf_threshold
+        target_imgsz = int(imgsz) if imgsz is not None else self.imgsz
+
         start_time = time.perf_counter()
 
         try:
@@ -130,7 +143,8 @@ class PersonDetector:
             results = self.model.predict(
                 source=image,
                 classes=[self.COCO_PERSON_CLASS_ID],
-                conf=self.conf_threshold,
+                conf=conf,
+                imgsz=target_imgsz,
                 device=self.device,
                 verbose=False,
             )
@@ -151,7 +165,7 @@ class PersonDetector:
                 confidence = float(box.conf[0].item())
 
                 # Validate detection strictly matches COCO person class and confidence threshold
-                if cls_id == self.COCO_PERSON_CLASS_ID and confidence >= self.conf_threshold:
+                if cls_id == self.COCO_PERSON_CLASS_ID and confidence >= conf:
                     coords = box.xyxy[0].tolist()
                     x1, y1, x2, y2 = [int(round(c)) for c in coords]
 
