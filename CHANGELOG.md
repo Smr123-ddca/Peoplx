@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Improved best-accuracy configuration to `conf = 0.15, imgsz = 640`, achieving MAE of **5.05 people** (a **24.17% improvement** over the 6.66 baseline).
-- Formulated recommended Raspberry Pi 4 configuration: `conf = 0.15, imgsz = 416` (MAE **7.58 people**, ~58% fewer FLOPs).
+- Formulated proposed Raspberry Pi 4 configuration: `conf = 0.15, imgsz = 416` (MAE **7.58 people**, ~58% fewer FLOPs; proposed based on computational modeling, pending physical hardware verification).
 
 ---
 

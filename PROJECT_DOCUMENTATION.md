@@ -441,7 +441,11 @@ $$\text{MAE Improvement (\%)} = \left(\frac{\text{Baseline MAE} - \text{New MAE}
    - Relative MAE Improvement: $\mathbf{24.17\%}$
    - Baseline MAPE: $31.88\% \to \mathbf{24.13\%}$ (Relative Improvement: $\mathbf{24.31\%}$)
    - **Mechanism**: Lowering the detection threshold to $0.15$ enables the model to register partially occluded figures in dense gatherings that were previously discarded.
-2. **Speed-Optimized Edge Configuration (`Conf = 0.15, Size = 416`)**:
+### Hardware Environment Distinction
+All empirical latency values recorded in this study were measured on a **Windows 11 x86_64 host system (multi-core desktop CPU)**. Latencies and throughput numbers for the Raspberry Pi 4 are theoretical estimates derived from ARM Cortex-A72 clock specifications and GFLOP scaling, and represent a **proposed deployment configuration pending physical hardware validation**.
+
+2. **Proposed Speed-Optimized Edge Configuration (`Conf = 0.15, Size = 416`)**:
+   - *(Proposed configuration based on computational modeling; not yet physically measured on Raspberry Pi hardware)*
    - Reduces FLOPs by $\sim 58\%$ compared to $640 \times 640$.
    - Delivers an MAE of **$7.58\text{ people}$**, maintaining competitive accuracy while providing approximately $2\times$ faster execution on ARM CPUs.
 

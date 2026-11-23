@@ -136,8 +136,8 @@ A chronological record of project milestones, architectural decisions, technical
   - Verified grid search constants, CLI arguments, and best-configuration metric selection logic in `tests/test_optimize.py`. Total test suite expanded to 34 passing tests.
 - **Results**:
   - **Best Overall Accuracy**: `Confidence = 0.15, Image Size = 640` achieved an MAE of **5.05 people** (MAPE **24.13%**), representing a **24.17% relative MAE improvement** over baseline.
-  - **Fastest Speed**: `Confidence = 0.35, Image Size = 416` executed in **143.5 ms/image**, but undercounted dense crowds (MAE 10.24).
-  - **Raspberry Pi 4 Recommendation**: `Confidence = 0.15, Image Size = 416` achieved an MAE of **7.58 people** while reducing computational FLOPs by ~58% relative to 640.
+  - **Fastest Speed**: `Confidence = 0.35, Image Size = 416` executed in **143.5 ms/image** (measured on Windows x86_64 CPU), but undercounted dense crowds (MAE 10.24).
+  - **Proposed Raspberry Pi 4 Configuration (Theoretical Recommendation)**: `Confidence = 0.15, Image Size = 416` achieved an MAE of **7.58 people** while reducing computational FLOPs by ~58% relative to 640 (proposed based on computational modeling; pending physical hardware verification).
 
 ---
 

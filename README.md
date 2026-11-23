@@ -423,8 +423,12 @@ $$\text{MAE Improvement (\%)} = \left(\frac{\text{Baseline MAE} - \text{New MAE}
   - Absolute MAPE improvement: $31.88\% - 24.13\% = \mathbf{7.75\%}$
   - Percentage MAPE improvement: $\left(\frac{31.88 - 24.13}{31.88}\right) \times 100\% = \mathbf{24.31\%}$
 
-- **Recommended Raspberry Pi Configuration (`Conf = 0.15, Imgsz = 416`)**:
-  - Yields an MAE of **7.58 people** while reducing input pixel count by ~58% relative to 640 resolution.
+### Hardware Environment Notice
+All performance benchmarking latencies reported below (ranging from 143.5 ms to 1016.7 ms) were **measured directly on a Windows 11 x86_64 CPU workstation**. Inferences on Raspberry Pi 4 ARM Cortex-A72 hardware are theoretical computational projections (~250–900 ms) and have **not yet been physically measured on edge hardware**.
+
+- **Proposed Raspberry Pi Configuration (`Conf = 0.15, Imgsz = 416` - Theoretical Recommendation)**:
+  - *(Proposed based on computational modeling and FLOP reduction; pending physical hardware verification on Raspberry Pi 4)*
+  - Yields an MAE of **7.58 people** on the 38-image dataset while reducing input pixel count by ~58% relative to 640 resolution.
   - Balances inference throughput on ARM Cortex-A72 with improved detection of occluded figures.
 
 ---
